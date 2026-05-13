@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小暖鍋 — 個人小火鍋</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --terracotta: #c2410c;
+      --amber: #f97316;
+      --amber-light: #fb923c;
+      --cream: #fffbf5;
+      --brown: #3d2a1a;
+      --text: #2c1810;
+      --white: #ffffff;
+      --gray: #888;
+      --border: #fed7aa;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); line-height: 1.7; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 16px 48px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,251,245,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'Noto Sans TC', sans-serif; font-size: 22px; font-weight: 700; color: var(--terracotta); text-decoration: none; letter-spacing: 0.05em; }
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--terracotta); }
+    .nav-cta { background: var(--terracotta); color: var(--white) !important; padding: 9px 22px; border-radius: 100px; font-size: 13px !important; font-weight: 600 !important; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--amber); }
+
+    .hero { min-height: 100vh; display: flex; align-items: center; background: var(--cream); padding: 0 48px; }
+    .hero-content { flex: 1; max-width: 560px; padding: 120px 0; }
+    .hero-badge { display: inline-block; background: rgba(249,115,22,0.1); color: var(--terracotta); font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 24px; }
+    .hero h1 { font-family: 'Noto Sans TC', sans-serif; font-size: clamp(40px, 6vw, 64px); font-weight: 700; line-height: 1.2; color: var(--text); margin-bottom: 20px; }
+    .hero h1 em { font-style: normal; color: var(--terracotta); }
+    .hero-sub { font-size: 16px; color: var(--gray); font-weight: 300; margin-bottom: 32px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary { background: var(--terracotta); color: var(--white); padding: 14px 32px; border-radius: 100px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.2s; }
+    .btn-primary:hover { background: var(--amber); transform: translateY(-1px); }
+    .btn-outline { border: 1.5px solid var(--terracotta); color: var(--terracotta); padding: 14px 32px; border-radius: 100px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.2s; }
+    .btn-outline:hover { background: rgba(249,115,22,0.08); }
+    .hero-img-col { flex: 1; display: flex; justify-content: center; align-items: center; padding: 120px 0; }
+    .hero-img { width: 100%; max-width: 480px; aspect-ratio: 4/5; object-fit: cover; border-radius: 24px; box-shadow: 0 40px 80px rgba(194,65,12,0.12); }
+
+    .marquee-strip { background: var(--terracotta); padding: 12px 0; overflow: hidden; }
+    .marquee-track { display: flex; gap: 60px; animation: marquee 25s linear infinite; white-space: nowrap; }
+    .marquee-strip span { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.85); }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .flavors { padding: 80px 48px; background: var(--white); }
+    .flavors-inner { max-width: 1100px; margin: 0 auto; }
+    .flavors-inner h2 { font-family: 'Noto Sans TC', sans-serif; font-size: 32px; font-weight: 700; color: var(--text); text-align: center; margin-bottom: 48px; }
+    .flavor-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .flavor-card { background: var(--cream); border-radius: 16px; padding: 28px; text-align: center; border: 1px solid var(--border); transition: all 0.3s; }
+    .flavor-card:hover { border-color: var(--amber); transform: translateY(-2px); }
+    .flavor-emoji { font-size: 36px; margin-bottom: 12px; }
+    .flavor-card h3 { font-family: 'Noto Sans TC', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .flavor-card p { font-size: 12px; color: var(--gray); }
+
+    .menu-section { padding: 100px 48px; background: var(--cream); }
+    .section-header { max-width: 1100px; margin: 0 auto 56px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .section-header h2 { font-family: 'Noto Sans TC', sans-serif; font-size: 32px; font-weight: 700; color: var(--text); }
+    .section-header p { font-size: 15px; color: var(--gray); margin-top: 6px; }
+    .menu-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .menu-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+    .menu-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(194,65,12,0.08); }
+    .menu-card img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+    .menu-card-body { padding: 24px; }
+    .menu-card h3 { font-family: 'Noto Sans TC', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .menu-card p { font-size: 13px; color: var(--gray); margin-bottom: 16px; }
+    .menu-bottom { display: flex; justify-content: space-between; align-items: center; }
+    .menu-include { font-size: 12px; color: var(--gray); }
+    .menu-price { font-size: 20px; font-weight: 700; color: var(--terracotta); }
+
+    .locations { padding: 100px 48px; background: var(--white); }
+    .locations-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .location-card { background: var(--cream); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+    .location-card h3 { font-family: 'Noto Sans TC', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .location-card p { font-size: 14px; color: var(--gray); margin-bottom: 4px; }
+    .location-status { margin-top: 16px; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--amber-light); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+    .cta-band { background: var(--terracotta); padding: 80px 48px; text-align: center; }
+    .cta-band h2 { font-family: 'Noto Sans TC', sans-serif; font-size: clamp(24px, 4vw, 40px); font-weight: 700; color: var(--white); margin-bottom: 16px; }
+    .cta-band p { font-size: 16px; color: rgba(255,255,255,0.8); margin-bottom: 32px; }
+    .btn-white { background: var(--white); color: var(--terracotta); padding: 14px 32px; border-radius: 100px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.2s; }
+    .btn-white:hover { background: var(--cream); transform: translateY(-1px); }
+
+    footer { background: var(--brown); padding: 64px 48px 32px; }
+    .footer-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand .nav-logo { font-size: 24px; display: inline-block; margin-bottom: 16px; color: var(--amber); }
+    .footer-brand p { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.8; }
+    .footer-col h4 { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 20px; font-weight: 600; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--amber); }
+    .footer-bottom { max-width: 1100px; margin: 0 auto; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: rgba(255,255,255,0.3); display: flex; justify-content: space-between; }
+
+    @media (max-width: 768px) {
+      nav { padding: 14px 24px; }
+      .nav-links { display: none; }
+      .hero { flex-direction: column; padding: 0 24px; }
+      .hero-content { padding: 120px 0 40px; }
+      .hero-img-col { padding: 0 0 60px; }
+      .flavor-grid { grid-template-columns: 1fr 1fr; }
+      .menu-grid, .locations-grid { grid-template-columns: 1fr; }
+      .section-header { flex-direction: column; gap: 12px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">小暖鍋</a>
+  <ul class="nav-links">
+    <li><a href="#flavors">湯底</a></li>
+    <li><a href="#menu">套餐</a></li>
+    <li><a href="#locations">據點</a></li>
+    <li><a href="#order" class="nav-cta">外送訂鍋</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🍲 個人小火鍋 · 台北</div>
+    <h1>一個人<br><em>也能好好</em><br>吃鍋</h1>
+    <p class="hero-sub">不用揪人、不用等位。一人小火鍋，9 種湯底、20 種配料，一個人也能溫暖上桌。</p>
+    <div class="hero-actions">
+      <a href="#order" class="btn-primary">外送訂鍋</a>
+      <a href="#menu" class="btn-outline">查看套餐</a>
+    </div>
+  </div>
+  <div class="hero-img-col">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" alt="個人小火鍋">
+  </div>
+</section>
+
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>🍲 9 種湯底 &nbsp;&nbsp;🥬 20 種配料 &nbsp;&nbsp;📦 外送全台 &nbsp;&nbsp;🥩 肉品升級 &nbsp;&nbsp;🍜 附主食 &nbsp;&nbsp;☕ 套餐含飲料</span>
+    <span>🍲 9 種湯底 &nbsp;&nbsp;🥬 20 種配料 &nbsp;&nbsp;📦 外送全台 &nbsp;&nbsp;🥩 肉品升級 &nbsp;&nbsp;🍜 附主食 &nbsp;&nbsp;☕ 套餐含飲料</span>
+  </div>
+</div>
+
+<section class="flavors" id="flavors">
+  <div class="flavors-inner">
+    <h2>9 種湯底，選你所愛</h2>
+    <div class="flavor-grid">
+      <div class="flavor-card"><div class="flavor-emoji">🍅</div><h3>番茄牛肉</h3><p>牛番茄慢熬，清甜酸香</p></div>
+      <div class="flavor-card"><div class="flavor-emoji">🌶️</div><h3>川味麻辣</h3><p>大紅袍花椒，辣而不燥</p></div>
+      <div class="flavor-card"><div class="flavor-emoji">🍄</div><h3>香菇素食</h3><p>大朵香菇，純素湯底</p></div>
+      <div class="flavor-card"><div class="flavor-emoji">🍛</div><h3>咖哩椰奶</h3><p>南洋風情，濃郁滑順</p></div>
+      <div class="flavor-card"><div class="flavor-emoji">🐟</div><h3>沙茶魚片</h3><p>傳統沙茶，鮮甜海味</p></div>
+      <div class="flavor-card"><div class="flavor-emoji">🍵</div><h3>昆布柴魚</h3><p>日式經典，清爽回甘</p></div>
+      <div class="flavor-card"><div class="flavor-emoji">🌿</div><h3>剝皮辣椒</h3><p>花蓮剝皮辣椒，微微辣</p></div>
+      <div class="flavor-card"><div class="flavor-emoji">🫘</div><h3>臭豆腐</h3><p>正宗台灣，臭中帶香</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="menu-section" id="menu">
+  <div class="section-header">
+    <div>
+      <h2>套餐選擇</h2>
+      <p>含湯底 + 肉品 + 蔬菜盆 + 附餐 + 飲料</p>
+    </div>
+    <a href="#" style="color:var(--terracotta);font-size:14px;font-weight:600;text-decoration:none;">所有套餐 →</a>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" alt="牛五花套餐">
+      <div class="menu-card-body">
+        <h3>牛五花套餐</h3>
+        <p>美國 Choice 牛五花 150g + 番茄湯底 + 蔬菜盆 + 王子麵 + 冬瓜茶</p>
+        <div class="menu-bottom">
+          <span class="menu-include">含附餐</span>
+          <span class="menu-price">NT$ 265</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="羊肉套餐">
+      <div class="menu-card-body">
+        <h3>嫩羊肉套餐</h3>
+        <p>紐西蘭羔羊肉 150g + 沙茶湯底 + 蔬菜盆 + 白飯 + 酸梅湯</p>
+        <div class="menu-bottom">
+          <span class="menu-include">含附餐</span>
+          <span class="menu-price">NT$ 255</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80" alt="海鮮套餐">
+      <div class="menu-card-body">
+        <h3>海鮮總匯套餐</h3>
+        <p>白蝦 + 蛤蜊 + 魚片 + 昆布湯底 + 蔬菜盆 + 冬粉</p>
+        <div class="menu-bottom">
+          <span class="menu-include">含附餐</span>
+          <span class="menu-price">NT$ 295</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80" alt="蔬食套餐">
+      <div class="menu-card-body">
+        <h3>健康蔬食套餐</h3>
+        <p>香菇素食湯底 + 20 種蔬菜 + 豆腐 + 藜麥飯</p>
+        <div class="menu-bottom">
+          <span class="menu-include">含附餐</span>
+          <span class="menu-price">NT$ 215</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=600&q=80" alt="麻辣套餐">
+      <div class="menu-card-body">
+        <h3>川味麻辣套餐</h3>
+        <p>嫩滑牛肉片 + 麻辣湯底 + 蔬菜盆 + 科學麵</p>
+        <div class="menu-bottom">
+          <span class="menu-include">含附餐</span>
+          <span class="menu-price">NT$ 275</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80" alt="咖哩套餐">
+      <div class="menu-card-body">
+        <h3>咖哩椰奶套餐</h3>
+        <p>雞腿肉 + 咖哩湯底 + 蔬菜盆 + 泰國米</p>
+        <div class="menu-bottom">
+          <span class="menu-include">含附餐</span>
+          <span class="menu-price">NT$ 245</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="locations" id="locations">
+  <div class="locations-grid">
+    <div class="location-card">
+      <h3>台北・公館店</h3>
+      <p>台北市大安區羅斯福路四段 88 號</p>
+      <p>捷運公館站 1 號出口步行 3 分鐘</p>
+      <p>11:00 - 23:00</p>
+      <div class="location-status"><span class="status-dot"></span><span style="color:var(--terracotta)">營業中</span></div>
+    </div>
+    <div class="location-card">
+      <h3>台北・南港店</h3>
+      <p>台北市南港區研究院路一段 88 號</p>
+      <p>捷運南港站步行 5 分鐘</p>
+      <p>11:00 - 22:30</p>
+      <div class="location-status"><span class="status-dot"></span><span style="color:var(--terracotta)">營業中</span></div>
+    </div>
+    <div class="location-card">
+      <h3>新北・板橋店</h3>
+      <p>新北市板橋區中山路一段 168 號</p>
+      <p>捷運府中站步行 4 分鐘</p>
+      <p>11:30 - 22:00</p>
+      <div class="location-status"><span class="status-dot" style="background:#facc15"></span><span style="color:#facc15">明日 11:30</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="order">
+  <h2>不想出門？外送到你家</h2>
+  <p>熊貓、UberEats 均可外送，讓你在家也能享受個人小火鍋的溫暖</p>
+  <a href="#" class="btn-white">打開外送平台 →</a>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">小暖鍋</a>
+      <p>一個人也能好好吃鍋。9 種湯底、20 種配料，一個人小火鍋，溫暖上桌。</p>
+    </div>
+    <div class="footer-col">
+      <h4>套餐</h4>
+      <ul>
+        <li><a href="#">牛五花套餐</a></li>
+        <li><a href="#">海鮮套餐</a></li>
+        <li><a href="#">麻辣套餐</a></li>
+        <li><a href="#">蔬食套餐</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>聯絡</h4>
+      <ul>
+        <li><a href="#">UberEats</a></li>
+        <li><a href="#">FoodPanda</a></li>
+        <li><a href="#">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 小暖鍋 Mini Hotpot. All rights reserved.</span>
+    <span>全台 3 店・外送全台</span>
+  </div>
+</footer>
+
+</body>
+</html>
